@@ -1,3 +1,5 @@
+//7568: 덩치
+//pass
 #include <iostream>
 using namespace std;
 //true if p1 > p2
@@ -31,7 +33,7 @@ int main(void)
             if (lt(people[i], people[j]))
                 ++cntGreater[i];
         }
-    for (size_t i = 0; i < cntPeople; i++)
+    for (int i = 0; i < cntPeople; i++)
     {
         // the rank of someone = the number of people greater than someone + 1
         cout << cntGreater[i] + 1 << ' ';
