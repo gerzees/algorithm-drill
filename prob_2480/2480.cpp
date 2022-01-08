@@ -1,4 +1,5 @@
 //2480: 주사위 세개
+//pass
 #include <iostream>
 
 using namespace std;
