@@ -1,5 +1,5 @@
 //10989: 수 정렬하기 3
-// Wrong
+//success
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -9,7 +9,8 @@ int main(void)
     cin.tie(0)->sync_with_stdio(false);
     int N;
     uint16_t numTemp;
-    static uint16_t numCnt[10001] = {
+    //numCnt can be 10,000,000: uint16_t-->uint32_t
+    static uint32_t numCnt[10001] = {
         0,
     };
     cin >> N;
