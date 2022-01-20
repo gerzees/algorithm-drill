@@ -1,5 +1,5 @@
 //4949: The balance of the world
-// wrong
+// fix
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -13,7 +13,7 @@ int main(void)
     string dataset;
     bool done = false;
     bool balanced;
-    char bracket[MAX_LEN_DATASET / 2 + 1];
+    char bracket[MAX_LEN_DATASET / 2];
     int bracketIdx;
     while (!done)
     {
@@ -29,36 +29,56 @@ int main(void)
         {
             if (!(data == '(' || data == ')' || data == '[' || data == ']'))
                 continue;
-            if (bracketIdx == 0 && (data == '(' || data == '['))
+            switch (data)
             {
-                bracket[bracketIdx++] = data;
-            }
-            else if (bracketIdx == 0)
+            case '(':
             {
-                balanced = false;
-                break;
-            }
-            else
-                switch (data)
+                if (!(bracketIdx < MAX_LEN_DATASET / 2)) //idx keep less than the half of max length of dataset
                 {
-                case ')':
-                    if (bracket[--bracketIdx] != '(')
-                        balanced = false;
-                    break;
-                case ']':
-
-                    if (bracket[--bracketIdx] != '[')
-                        balanced = false;
-                    break;
-                default:
-                    bracket[bracketIdx++] = data;
+                    balanced = false;
                     break;
                 }
-            if (!balanced)
-            {
-                break;
+                bracket[bracketIdx++] = '(';
             }
+            break;
+            case '[':
+            {
+                if (!(bracketIdx < MAX_LEN_DATASET / 2))
+                {
+                    balanced = false;
+                    break;
+                }
+                bracket[bracketIdx++] = '[';
+            }
+            break;
+            case ')':
+            {
+                if (bracketIdx == 0)
+                {
+                    balanced = false;
+                    break;
+                }
+                if (bracket[--bracketIdx] != '(')
+                    balanced = false;
+            }
+            break;
+            case ']':
+            {
+                if (bracketIdx == 0)
+                {
+                    balanced = false;
+                    break;
+                }
+                if (bracket[--bracketIdx] != '[')
+                    balanced = false;
+            }
+            break;
+            }
+            if (!balanced)
+                break;
         } //end for
+        if (bracketIdx != 0)
+            balanced = false;
         cout << (balanced ? "yes" : "no") << '\n';
     } //end while
     return 0;
