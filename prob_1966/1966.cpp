@@ -9,8 +9,9 @@ int main(void)
     cin >> T;
     for (size_t i = 0; i < T; i++)
     {
-        uint cntDoc, target, doc[101];
-        uint cntPrio[10];
+        //caution: array initialization!
+        uint cntDoc, target, doc[101]={};
+        uint cntPrio[10]={};
         // priority 10 means queue end
         // constexpr uint END = 10;
         cin >> cntDoc >> target;
