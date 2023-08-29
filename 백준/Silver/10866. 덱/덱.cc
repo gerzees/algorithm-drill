@@ -7,6 +7,8 @@ constexpr int MX = 10000;
 
 int main(void)
 {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 	int deq[MX * 2 + 1];
 	int N; // 1<= <=10,000
 	int head = MX;
