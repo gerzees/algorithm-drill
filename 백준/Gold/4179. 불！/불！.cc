@@ -1,26 +1,25 @@
-// start 10:16 ~10:55 /stop/ re 18:39
-// end 
+// start 10:06
+// end 10:51
+// 어제 4시간 넘게 잡고 있었는데 못 품. 풀이 보고 겨우 이해.
+// 불이 고립된 경우를 생각 못했음. 
+// J의 BFS에서 불에 잡히는거 검사할 때, 불이 번진 곳인지 확인해야함(distF[nr][nc]>=0)
 #include <bits/stdc++.h>
 
 using namespace std;
 
-char board[1001][1001];
-int fireDist[1001][1001];
-int joeDist[1001][1001];
-const char WALL = '#';
-const char JOE = 'J';
-const char FIRE = 'F';
-const char AISLE = '.';
-const int NOT_YET = -1;
-const int IMPOSSIBLE = -2;
-queue<pair<int, int> > Q;
-
 int main(void)
 {
-	int R, C;
-	cin >> R >> C;
-	pair<int, int> joeStart;
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
+	char board[1001][1001];
+	int R, C;
+	int distF[1001][1001] = { 0, };
+	int distJ[1001][1001] = { 0, };
+	queue<pair<int, int> > Q;
+	pair<int, int> JStart;
+
+	cin >> R >> C;
 	for (int r = 0; r < R; ++r) {
 		string line;
 		cin >> line;
@@ -29,35 +28,30 @@ int main(void)
 			board[r][c] = line[c];
 
 			switch (board[r][c]) {
-			case AISLE:
-			{
-				fireDist[r][c] = NOT_YET;
-				joeDist[r][c] = NOT_YET;
-			}
-			break;
-			case WALL:
-			{
-				fireDist[r][c] = IMPOSSIBLE;
-				joeDist[r][c] = IMPOSSIBLE;
-			}
-			break;
-			case JOE:
-			{
-				fireDist[r][c] = NOT_YET;
-				joeStart.first = r;
-				joeStart.second = c;
-				joeDist[r][c] = 0;
-			}
-			break;
-			case FIRE:
-			{
-				Q.push({ r,c });
-				fireDist[r][c] = 0;
-				joeDist[r][c] = IMPOSSIBLE;
-			}
-			break;
-			default:
+			case '#':
 				break;
+			case '.':
+			{
+				distF[r][c] = -1;
+				distJ[r][c] = -1;
+			}
+			break;
+			case 'F':
+				Q.push({ r,c });
+				break;
+			case 'J':
+			{
+				distF[r][c] = -1;
+
+				if (r == 0 || c == 0 || r == R - 1 || c == C - 1) {
+					cout << 1;
+					return 0;
+				}
+
+				JStart.first = r;
+				JStart.second = c;
+			}
+			break;
 			}
 		}
 	}
@@ -65,7 +59,7 @@ int main(void)
 	const int dr[] = { 1,-1,0,0 };
 	const int dc[] = { 0,0,1,-1 };
 
-	while (!Q.empty()) {
+	while (!Q.empty()) { // Fire BFS
 		int r = Q.front().first;
 		int c = Q.front().second;
 		Q.pop();
@@ -78,45 +72,42 @@ int main(void)
 				continue;
 			}
 
-			if (fireDist[nr][nc] >= 0 || board[nr][nc] == WALL) {
+			if (board[nr][nc] == '#' || distF[nr][nc] >= 0) {
 				continue;
 			}
 
-			fireDist[nr][nc] = fireDist[r][c] + 1;
+			distF[nr][nc] = distF[r][c] + 1;
 			Q.push({ nr,nc });
 		}
 	}
 
-	Q.push(joeStart);
 
-	while (!Q.empty()) {
+	Q.push(JStart);
+
+	while (!Q.empty()) { // J BFS
 		int r = Q.front().first;
 		int c = Q.front().second;
 		Q.pop();
 
-		if (r == 0 || r == R - 1 || c == 0 || c == C - 1) {
-			cout << joeDist[r][c] + 1;
-			return 0;
-		}
 
 		for (int i = 0; i < 4; ++i) {
 			int nr = r + dr[i];
 			int nc = c + dc[i];
 
-			if (nr < 0 || nr >= R || nc < 0 || nc >= C) {
+			if (board[nr][nc] == '#' || distJ[nr][nc] >= 0) {
 				continue;
 			}
 
-			if (joeDist[nr][nc] >= 0 || board[nr][nc] == WALL) {
+			if (distF[nr][nc] >= 0 && distF[nr][nc] <= distJ[r][c] + 1) {
 				continue;
 			}
 
-			if (fireDist[nr][nc]>=0 && joeDist[r][c] >= fireDist[nr][nc] - 1) {
-				joeDist[nr][nc] = IMPOSSIBLE;
-				continue;
+			if (nr == 0 || nr == R - 1 || nc == 0 || nc == C - 1) {
+				cout << distJ[r][c] + 2;
+				return 0;
 			}
 
-			joeDist[nr][nc] = joeDist[r][c] + 1;
+			distJ[nr][nc] = distJ[r][c] + 1;
 			Q.push({ nr,nc });
 		}
 	}
