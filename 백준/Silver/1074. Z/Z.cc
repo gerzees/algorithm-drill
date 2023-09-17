@@ -1,29 +1,8 @@
 // s 12;18
-// e 14:22
+// e 14:45
 #include <bits/stdc++.h>
 
 using namespace std;
-
-int getDistRecursive(int n, int r, int c)
-{
-	if (n == 0) {
-		return 0;
-	}
-	int half = 1 << (n - 1);
-
-	int countQuarter = half * half;
-
-	if (r < half && c < half) {//LeftTop
-		return getDistRecursive(n - 1, r, c);
-	}
-	if (r < half) {//RightTop
-		return countQuarter + getDistRecursive(n - 1, r, c - half);
-	}
-	if (c < half) {//LeftBottom
-		return 2 * countQuarter + getDistRecursive(n - 1, r - half, c);
-	}
-	return 3 * countQuarter + getDistRecursive(n - 1, r - half, c - half);
-}
 
 int main(void)
 {
@@ -31,8 +10,24 @@ int main(void)
 	cin.tie(0);
 	int n, r, c;
 	cin >> n >> r >> c;
+	int ans = 0;
 
-	cout << getDistRecursive(n, r, c);
+	for (int i = n - 1; i >= 0; --i) {
+		int mask = 1 << i;
+		ans <<= 1;
+
+		if (r & mask) {
+			ans |= 1;
+		}
+
+		ans <<= 1;
+
+		if (c & mask) {
+			ans |= 1;
+		}
+	}
+
+	cout << ans;
 
 	return 0;
 }
