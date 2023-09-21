@@ -1,44 +1,42 @@
 // s 10:46
-// e 11:44
+// e 11:55
 #include <bits/stdc++.h>
 
 using namespace std;
 
 int n;
 int s;
+int arr[21];
 int cnt;
-int sum;
-int arr[21]; 
 
-void selectRecursive(int cntSelect, int beginSelect)
+void selectRecursive(int index, int total)
 {
-	if (cntSelect == 0) {
-
-		if (s == sum) {
+	if (index == n) {
+		if (total == s) {
 			++cnt;
 		}
-
 		return;
 	}
 
-	for (int i = beginSelect; i < n; ++i) {
-		sum += arr[i];
-		selectRecursive(cntSelect - 1, i + 1);
-		sum -= arr[i];
-	}
+	selectRecursive(index + 1, total); // arr[index] not selected
+	selectRecursive(index + 1, total + arr[index]);
 }
 
 int main(void)
 {
 	cin >> n >> s;
+
 	for (int i = 0; i < n; ++i) {
 		cin >> arr[i];
 	}
 
-	for (int i = n; i > 0; --i) {
-		selectRecursive(i, 0);
+	selectRecursive(0, 0);
+
+	if (s == 0) {
+		--cnt;
 	}
 
 	cout << cnt;
+
 	return 0;
 }
