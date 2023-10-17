@@ -1,5 +1,5 @@
 // s 16:53
-// e 17:15
+// e 17:25
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -14,29 +14,24 @@ int main(void)
 	}
 	sort(nums, nums + n);
 
-	long long cur = nums[0];
 	long long ans = nums[0];
 	int ansCnt = 1;
-	int curCnt = 1;
-	for (int i = 1; i < n; ++i) {
-		if (cur == nums[i]) {
-			++curCnt;
+	int cnt = 1;
+	nums[n] = (1ll << 62) + 1;
+	for (int i = 1; i < n + 1; ++i) {
+		if (nums[i - 1] == nums[i]) {
+			++cnt;
 		}
 		else {
-			if (curCnt > ansCnt) {
-				ans = cur;
-				ansCnt = curCnt;
+			if (cnt > ansCnt) {
+				ans = nums[i - 1];
+				ansCnt = cnt;
 			}
 
-			cur = nums[i];
-			curCnt = 1;
+			cnt = 1;
 		}
 	}
 
-	if (curCnt > ansCnt) {
-		ans = cur;
-		ansCnt = curCnt;
-	}
 
 	cout << ans;
 
