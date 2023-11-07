@@ -1,5 +1,5 @@
 // s 18:49
-// e 19:16
+// e 19:17
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -12,15 +12,8 @@ int main(void)
 
 	for (int i = 0; i < cnt; ++i) {
 		cin >> element;
-		long long reversed = 0;
-		string::reverse_iterator rIterOfElement = element.rbegin();
-		for (;*rIterOfElement == '0'; ++rIterOfElement) {
-		}
-		for (;rIterOfElement != element.rend(); ++rIterOfElement) {
-			reversed *= 10;
-			reversed += *rIterOfElement - '0';
-		}
-		elements.push_back(reversed);
+		reverse(element.begin(), element.end());
+		elements.push_back(stoll(element));
 	}
 
 	sort(elements.begin(), elements.end());
