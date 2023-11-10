@@ -1,40 +1,30 @@
-// s 22:16
-// e 23:09
+// s 22:16, 11:50
+// e 23:09, 12:08
+// 배열, 점화식, 초기조건 -재귀랑 비슷한 것 같긴한데, 큰 거 일부분 하고 맡기는 게 아니라 작은 거부터 차례로 쌓는 방식
+// D[i] = i를 1로 만드는 데 사용하는 연산 횟수 최솟값
+// 1. 3으로 나눈다
+// 2. 2로 나눈다
+// 3. 1로 나눈다
+// D[i-1],D[i/3],D[i/2] 중에서 최소값에 +1 == D[i]
+// i가 3이나 2로 안나누어 떨어질 수도 있다. i에서 i/3이나 i/2으로 만들려면 1번 이상 연산해야한단 말.
+// D[1] == 0
+
 #include <bits/stdc++.h>
-
 using namespace std;
-int D[1000001];
 
-int dpRecursive(int n)
-{
-	if (n == 1 || D[n] != 0) {
-		return D[n];
-	}
-
-	int min = dpRecursive(n - 1);
-
-	if (n % 3 == 0) {
-		if (min > dpRecursive(n / 3)) {
-			min = dpRecursive(n / 3);
-		}
-	}
-
-	if (n % 2 == 0) {
-		if (min > dpRecursive(n / 2)) {
-			min = dpRecursive(n / 2);
-		}
-	}
-
-	D[n] = min + 1;
-	return D[n];
-}
-
+int D[1000002];
 int main(void)
 {
-	int N;
-	cin >> N;
+	int n;
+	cin >> n;
 
-	cout << dpRecursive(N);
+	for (int i = 2; i <= n; ++i) {
+		D[i] = D[i - 1] + 1;
+		D[i] = min(D[i], D[i / 3] + 1 + i % 3);
+		D[i] = min(D[i], D[i / 2] + 1 + i % 2);
+	}
+
+	cout << D[n];
 
 	return 0;
 }
