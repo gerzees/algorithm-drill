@@ -4,7 +4,7 @@ using namespace std;
 int main(void)
 {
 	// nCm n!/(n-m)!*m!
-	// 소인수분해 5의 개수가 끝자리 0 개수 결정하는 게 아닌가봄?
+	// 소인수분해 5의 개수, 2의 개수 중 작은 게 끝자리 0 개수 결정하나봄
 	// n 27이라고 하면 5의 배수 개수
 	// n/5=5 5,10,15,20,25
 	// 25의 배수 개수
@@ -13,8 +13,8 @@ int main(void)
 
 	int n, m;
 	cin >> n >> m;
-	long long primeFactor5Cnt = 0;
-	long long primeFactor2Cnt = 0;
+	int primeFactor5Cnt = 0;
+	int primeFactor2Cnt = 0;
 
 	for (int i = n / 5;i != 0; i /= 5) {
 		primeFactor5Cnt += i;
