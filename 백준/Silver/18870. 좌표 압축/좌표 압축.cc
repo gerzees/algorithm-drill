@@ -1,8 +1,8 @@
-//14:07, 14:22
+//14:07, 14:37
 #include<bits/stdc++.h>
 using namespace std;
 int a[1000000];
-int sorted[1000000];
+int sortedUnique[1000000];
 int main(void)
 {
 	int n;
@@ -13,24 +13,15 @@ int main(void)
 	}
 
 	for (int i = 0;i < n;++i) {
-		sorted[i] = a[i];
+		sortedUnique[i] = a[i];
 	}
 
-	sort(sorted, sorted + n);
+	sort(sortedUnique, sortedUnique + n);
 
-	int cnt = 1;
-
-	for (int i = 1; i < n;++i) {
-		if (sorted[cnt - 1] == sorted[i]) {
-			continue;
-		}
-
-		sorted[cnt] = sorted[i];
-		++cnt;
-	}
+	int cnt = unique(sortedUnique, sortedUnique + n) - sortedUnique;
 
 	for (int i = 0; i < n; ++i) {
-		cout << lower_bound(sorted, sorted + cnt, a[i]) - sorted << ' ';
+		cout << lower_bound(sortedUnique, sortedUnique + cnt, a[i]) - sortedUnique << ' ';
 	}
 
 	return 0;
