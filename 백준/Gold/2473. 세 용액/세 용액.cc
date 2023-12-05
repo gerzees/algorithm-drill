@@ -1,11 +1,10 @@
-// 15:02, 15:19
+// 15:02, 21:28
 #include<bits/stdc++.h>
 using namespace std;
 
 int n;
 int a[5000];
 int ans[3];
-int di[3] = { -1,0,1 };
 int main(void)
 {
 	ios::sync_with_stdio(0);
@@ -25,18 +24,18 @@ int main(void)
 			long long cur = (long long)a[i] + (long long)a[j];
 			int idx = lower_bound(a + j + 1, a + n, -cur) - a;
 
-			for (int k = 0;k < 3;++k) {
-				if (idx + di[k] <= j || idx + di[k] >= n) {
+			for (int k = -1;k < 1;++k) {
+				if (idx + k <= j || idx + k >= n) {
 					continue;
 				}
 
-				long long sol = abs(cur + a[idx + di[k]]);
+				long long sol = abs(cur + a[idx + k]);
 
 				if (sol < ansSol) {
 					ansSol = sol;
 					ans[0] = a[i];
 					ans[1] = a[j];
-					ans[2] = a[idx + di[k]];
+					ans[2] = a[idx + k];
 				}
 
 				if (sol == 0) {
