@@ -1,37 +1,37 @@
-//9:55,10:28
+//9:36,9:55
 #include<bits/stdc++.h>
 using namespace std;
 
-int n;
-int m;
-int a[100000];
+int n, m, a[100000];
 
 int main(void)
 {
 	cin >> n >> m;
+
 	for (int i = 0; i < n; ++i) {
 		cin >> a[i];
 	}
 
 	sort(a, a + n);
-	m = abs(m);
-	int diff = (int)2e9;
 
-	for (int i = 0; i < n - 1; ++i) {
-		int idx = lower_bound(a + i, a + n, a[i] + m) - a;
-		if (idx == n) {
-			continue;
+	int st, en;
+	st = en = 0;
+	int minDif = 0x7fffffff;
+
+	while (st < n) {
+
+		while (en != n - 1 && a[en] - a[st] < m) {
+			++en;
 		}
 
-		diff = min(diff, a[idx] - a[i]);
-		if (diff == m) {
-			cout << m;
-
-			return 0;
+		if (a[en] - a[st] >= m) {
+			minDif = min(minDif, a[en] - a[st]);
 		}
+
+		++st;
 	}
 
-	cout << diff;
+	cout << minDif;
 
 	return 0;
 }
