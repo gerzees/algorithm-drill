@@ -1,8 +1,8 @@
-//13:31,13:46
+//13:31,14:00
 #include<bits/stdc++.h>
 using namespace std;
 
-int n, m, a[100000];
+int n, m, a[100005];
 
 int main(void)
 {
@@ -12,26 +12,21 @@ int main(void)
 	}
 
 	int cnt = 0;
+	int st = 0;
 	int en = 0;
 	int s = a[0];
 
-	for (int st = 0; st < n; ++st) {
-		while (en < n && s < m) {
-			++en;
-			if (en != n) {
-				s += a[en];
-			}
+	while (en < n) {
+		if (s < m) {
+			s += a[++en];
 		}
-
-		if (en == n) {
-			break;
-		}
-
 		if (s == m) {
 			++cnt;
+			s -= a[st++];
 		}
-
-		s -= a[st];
+		else if (s > m) {
+			s -= a[st++];
+		}
 	}
 
 	cout << cnt;
