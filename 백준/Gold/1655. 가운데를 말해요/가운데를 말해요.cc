@@ -1,4 +1,4 @@
-// 8:51, 9:38
+// 8:51, 9:47
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -10,20 +10,18 @@ int main(void) {
   cin.tie(0);
 
   cin >> N;
-  while (N--) {
+  for (int i = 0; i < N;++i) {
     cin >> num;
 
-    smallHalf.push(num);
-    bigHalf.push(smallHalf.top());
-    smallHalf.pop();
-    int middle = bigHalf.top();
-    bigHalf.pop();
-
-    if (smallHalf.size() == bigHalf.size()) {
-      smallHalf.push(middle);
+    if (i % 2 == 0) {
+      bigHalf.push(num);
+      smallHalf.push(bigHalf.top());
+      bigHalf.pop();
     }
     else {
-      bigHalf.push(middle);
+      smallHalf.push(num);
+      bigHalf.push(smallHalf.top());
+      smallHalf.pop();
     }
 
     cout << smallHalf.top() << '\n';
