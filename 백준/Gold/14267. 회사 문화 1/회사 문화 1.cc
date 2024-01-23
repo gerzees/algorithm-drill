@@ -1,10 +1,9 @@
-// 8:24,9:42
+// 8:24,14:24
 #include <bits/stdc++.h>
 using namespace std;
 
 int n, m;
 vector<int> adj[100'001];
-vector<bool> vis(100'001);
 int parent;
 int scores[100'001];
 
@@ -26,24 +25,19 @@ int main() {
     scores[i] += w;
   }
 
-  for (int i = 1;i <= n; ++i) {
-    if (vis[i]) continue;
+  queue<int> q;
+  q.push(1);
 
-    queue<int> q;
-    q.push(i);
-    vis[i] = true;
+  while (!q.empty()) {
+    int cur = q.front(); q.pop();
 
-    while (!q.empty()) {
-      int cur = q.front(); q.pop();
+    for (int child : adj[cur]) {
 
-      for (int child : adj[cur]) {
-
-        scores[child] += scores[cur];
-        q.push(child);
-        vis[child] = true;
-      }
+      scores[child] += scores[cur];
+      q.push(child);
     }
   }
+
 
   for (int i = 1; i <= n; ++i) {
     cout << scores[i] << ' ';
