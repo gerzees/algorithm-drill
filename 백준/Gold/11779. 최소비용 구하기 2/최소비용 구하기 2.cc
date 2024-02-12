@@ -15,6 +15,7 @@ int main() {
 
   int n, m;
   cin >> n >> m;
+  fill(d, d + n + 1, INF);
 
   while (m--) {
     int st, en, cost;
@@ -25,7 +26,6 @@ int main() {
   int st, en;
   cin >> st >> en;
   priority_queue < pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
-  fill(d, d + n + 1, INF);
   d[st] = 0;
   pq.push({ d[st],st });
 
