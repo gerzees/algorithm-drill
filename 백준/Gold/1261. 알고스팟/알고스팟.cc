@@ -7,7 +7,6 @@ using namespace std;
 const int INF = 0x3f3f3f3f;
 int n, m;
 int d[101][101];
-bool chk[101][101];
 string maze[101];
 // 상,하,좌,우
 int dx[] = { -1,1,0,0 };
@@ -44,19 +43,12 @@ int main() {
 
     if (cur.X == n - 1 && cur.Y == m - 1) break;
 
-    chk[cur.X][cur.Y] = true;
-
     for (int i = 0;i < 4;++i) {
       pair<int, int> nxt = { cur.X + dx[i],cur.Y + dy[i] };
 
       if (nxt.X < 0 || nxt.X >= n || nxt.Y < 0 || nxt.Y >= m) continue;
 
-      if (chk[nxt.X][nxt.Y]) continue;
-
-      int nxt_dist = dist;
-      if (maze[nxt.X][nxt.Y] != '0') {
-        ++nxt_dist;
-      }
+      int nxt_dist = dist + maze[nxt.X][nxt.Y] - '0';
 
       if (nxt_dist >= d[nxt.X][nxt.Y]) continue;
 
