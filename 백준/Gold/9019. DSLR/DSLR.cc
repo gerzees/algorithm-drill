@@ -82,8 +82,7 @@ int main() {
         if (next == A) {
           continue;
         }
-        if (op_arr_len[next] > 0
-          && op_arr_len[next] <= op_arr_len[cur] + 1) {
+        if (op_arr_len[next] > 0) {
           continue;
         }
 
