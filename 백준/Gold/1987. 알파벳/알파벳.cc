@@ -15,9 +15,9 @@ int C;
 /// </summary>
 string table[21];
 /// <summary>
-/// 알파벳 지났는지 체크
+/// 해당 칸에 도달할 때 지나온 알파벳 조합 bit로 저장
 /// </summary>
-bool bPassed[30];
+set<int> prev_alphas[21][21];
 /// <summary>
 /// 지날 수 있는 최대 칸 수
 /// </summary>
@@ -26,10 +26,10 @@ int result;
 int dr[4] = { 0,1,0,-1 };
 int dc[4] = { 1,0,-1,0 };
 
-void dfs(int r, int c, int dist) {
-  if (dist > result) {
+void dfs(int r, int c, int cnt_alphas, int alphas) {
+  if (cnt_alphas > result) {
     // 최대 칸 수 갱신 
-    result = dist;
+    result = cnt_alphas;
   }
 
   // 사방으로 확인 후 전진
@@ -43,16 +43,19 @@ void dfs(int r, int c, int dist) {
     }
 
     int idx = table[next_r][next_c] - 'A';
+    int next_alphas = alphas | 1 << idx;
     // 이미 지나온 알파벳으로 전진 불가
-    if (bPassed[idx]) {
+    if (next_alphas == alphas) {
       continue;
     }
 
-    // 전진
-    bPassed[idx] = true;
-    dfs(next_r, next_c, dist + 1);
-    // 전진 끝 원상 복구
-    bPassed[idx] = false;
+    pair<set<int>::iterator, bool> insert_result = prev_alphas[next_r][next_c].insert(next_alphas);
+    // 이전에 같은 알파벳 조합으로 도달한 적 있음
+    if (insert_result.Y == false) {
+      continue;
+    }
+
+    dfs(next_r, next_c, cnt_alphas + 1, next_alphas);
   }
 }
 
@@ -70,8 +73,9 @@ int main() {
   //*처리
   // 시작 점 체크
   int idx = table[0][0] - 'A';
-  bPassed[idx] = true;
-  dfs(0, 0, 1);
+  int alphas = 1 << idx;
+  prev_alphas[0][0].insert(alphas);
+  dfs(0, 0, 1, alphas);
   // 처리 끝*/
 
   //*출력
