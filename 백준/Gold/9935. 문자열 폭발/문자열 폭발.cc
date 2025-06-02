@@ -5,8 +5,17 @@ using namespace std;
 string NO_CHAR = "FRULA";
 string str;
 string bomb;
-vector<char> result;
-vector<char> idxs;
+/// <summary>
+/// result의 인덱스
+/// </summary>
+int ri;
+char result[1'000'001];
+/// <summary>
+/// idxs의 인덱스
+/// </summary>
+int ii;
+char idxs[1'000'001];
+
 int main() {
   ios::sync_with_stdio(0);
   cin.tie(0);
@@ -14,9 +23,6 @@ int main() {
   //입력
   str.reserve(1'000'000);
   bomb.reserve(36);
-  result.reserve(1'000'000);
-  idxs.reserve(1'000'000);
-
   cin >> str >> bomb;
 
   // 처리
@@ -25,8 +31,8 @@ int main() {
     if (c != bomb[bomb_idx]) {
       // 폭발문자열 첫 문자와 비교라면 더 볼 것도 없음
       if (bomb_idx == 0) {
-        result.push_back(c);
-        idxs.push_back(bomb_idx);
+        result[ri++] = c;
+        idxs[ii++] = bomb_idx;
         continue;
       }
 
@@ -34,8 +40,8 @@ int main() {
       bomb_idx = 0;
 
       if (c != bomb[bomb_idx]) {
-        result.push_back(c);
-        idxs.push_back(bomb_idx);
+        result[ri++] = c;
+        idxs[ii++] = bomb_idx;
         continue;
       }
     }
@@ -45,27 +51,26 @@ int main() {
     if (bomb_idx == bomb.length()) {
       // 폭발문자열 폭발!
       for (int i = 0; i < bomb_idx - 1; ++i) {
-        idxs.pop_back();
-        result.pop_back();
+        --ii;
+        --ri;
       }
 
-      bomb_idx = idxs.empty() ? 0 : idxs.back();
-
+      bomb_idx = ii == 0 ? 0 : idxs[ii - 1];
       continue;
     }
 
     // 폭발 문자열과 중복인 부분 발견 > 추적
-    idxs.push_back(bomb_idx);
-    result.push_back(c);
+    result[ri++] = c;
+    idxs[ii++] = bomb_idx;
   }
 
   // 출력
-  if (result.size() == 0) {
+  if (ri == 0) {
     cout << NO_CHAR;
 
     return 0;
   }
 
-  string result_str(result.begin(), result.end());
-  cout << result_str;
+  result[ri] = '\0';
+  cout << result;
 }
