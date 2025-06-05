@@ -39,7 +39,11 @@ int main() {
 
       ++cnt_shortest;
     }
-
+    // 동생 찾은 후에는
+      // 가장 빠른 시간 초과하는 길은 가지 않는다
+    if (time_shortest >= 0 && time_shortest < time_pos[cur]) {
+      break;
+    }
 
     nxt_pos[0] = cur - 1;
     nxt_pos[1] = cur + 1;
@@ -57,13 +61,6 @@ int main() {
       // 가지 않는다
       if (nxt == N
         || time_pos[nxt] > 0 && time_pos[nxt] < time_pos[cur] + 1) {
-        continue;
-      }
-
-      // 동생 찾은 후에는
-      // 가장 빠른 시간 초과하는 길은 가지 않는다
-
-      if (time_shortest >= 0 && time_shortest < time_pos[cur] + 1) {
         continue;
       }
 
