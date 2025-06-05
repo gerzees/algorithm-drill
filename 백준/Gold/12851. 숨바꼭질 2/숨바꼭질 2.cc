@@ -14,14 +14,8 @@ int K;
 int time_pos[100'001];
 int time_shortest = -1;
 int cnt_shortest;
-
+int nxt_pos[3];
 queue<int> Q;
-
-int (*nxt_pos[3])(int) = {
-[](int cur)->int {return cur + 1; },
-[](int cur)->int {return cur - 1; },
-[](int cur)->int {return cur * 2; }
-};
 
 int main() {
   ios::sync_with_stdio(0);
@@ -46,8 +40,13 @@ int main() {
       ++cnt_shortest;
     }
 
+
+    nxt_pos[0] = cur - 1;
+    nxt_pos[1] = cur + 1;
+    nxt_pos[2] = cur * 2;
+
     for (int i = 0; i < 3; ++i) {
-      int nxt = nxt_pos[i](cur);
+      int nxt = nxt_pos[i];
 
       // 범위 벗어나면 가지 않는다
       if (nxt < 0 || nxt > 100'000) {
