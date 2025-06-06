@@ -2,43 +2,50 @@
 using namespace std;
 typedef unsigned long long ull;
 
-int M;
+int cnt;
 
-ull X = 1'000'000'007ull;
+ull M = 1'000'000'007ull;
 ull result;
 
 
-int get_inverse(ull num, ull mod) {
-  ull inverse = 1;
-  ull exp = mod - 2;
-  for (ull flag = 1; flag <= exp; flag <<= 1, num = (num * num) % mod) {
-    if (!(flag & exp)) {
-      continue;
-    }
+int get_inverse(int a) {
+  int y = 0;
+  int x = 1;
+  int m = M;
+  while (a > 1) {
+    int q = a / m;
+    int t = m;
 
-    inverse = (inverse * num) % mod;
+    m = a % m;
+    a = t;
+    t = y;
+
+    y = x - q * y;
+    x = t;
   }
+  if (x < 0)
+    x += M;
 
-  return inverse;
+  return x;
 }
 
 int main() {
   ios::sync_with_stdio(0);
   cin.tie(0);
-  cin >> M;
+  cin >> cnt;
 
   ull N, S;
   cin >> N >> S;
 
-  for (int i = 0; i < M - 1; ++i) {
+  for (int i = 0; i < cnt - 1; ++i) {
     ull Ni, Si;
     cin >> Ni >> Si;
 
-    S = (S * Ni + Si * N) % X;
-    N = (N * Ni) % X;
+    S = (S * Ni + Si * N) % M;
+    N = (N * Ni) % M;
   }
 
-  result = (S * get_inverse(N, X)) % X;
+  result = (S * get_inverse(N)) % M;
 
   cout << result;
 }
