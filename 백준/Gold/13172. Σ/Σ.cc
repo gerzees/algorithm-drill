@@ -12,8 +12,7 @@ int get_inverse(unsigned long long num, unsigned long long mod) {
       continue;
     }
 
-    inverse *= num;
-    inverse %= mod;
+    inverse = (inverse * num) % mod;
   }
 
   return inverse;
