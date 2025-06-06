@@ -27,9 +27,9 @@ int main() {
   for (int i = 0; i < M; ++i) {
     unsigned long long N, S;
     cin >> N >> S;
-    result += S * get_inverse(N, p);
-    result %= p;
+    result += (S * get_inverse(N, p))%p;
   }
+  result %= p;
 
   cout << result;
 }
