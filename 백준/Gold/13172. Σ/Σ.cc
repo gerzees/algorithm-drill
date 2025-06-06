@@ -1,13 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
-int M;
-unsigned long long p = 1'000'000'007ull;
-unsigned long long result;
+typedef unsigned long long ull;
 
-int get_inverse(unsigned long long num, unsigned long long mod) {
-  unsigned long long inverse = 1;
-  unsigned long long exp = mod - 2;
-  for (unsigned long long flag = 1; flag <= exp; flag <<= 1, num = (num * num) % mod) {
+int M;
+
+ull X = 1'000'000'007ull;
+ull result;
+
+
+int get_inverse(ull num, ull mod) {
+  ull inverse = 1;
+  ull exp = mod - 2;
+  for (ull flag = 1; flag <= exp; flag <<= 1, num = (num * num) % mod) {
     if (!(flag & exp)) {
       continue;
     }
@@ -23,12 +27,18 @@ int main() {
   cin.tie(0);
   cin >> M;
 
-  for (int i = 0; i < M; ++i) {
-    unsigned long long N, S;
-    cin >> N >> S;
-    result += (S * get_inverse(N, p))%p;
+  ull N, S;
+  cin >> N >> S;
+
+  for (int i = 0; i < M - 1; ++i) {
+    ull Ni, Si;
+    cin >> Ni >> Si;
+
+    S = (S * Ni + Si * N) % X;
+    N = (N * Ni) % X;
   }
-  result %= p;
+
+  result = (S * get_inverse(N, X)) % X;
 
   cout << result;
 }
