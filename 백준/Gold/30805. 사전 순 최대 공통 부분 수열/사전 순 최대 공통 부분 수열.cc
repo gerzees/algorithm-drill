@@ -6,33 +6,37 @@ int cnt_A;
 int A[101];
 int cnt_B;
 int B[101];
-vi cs[101][101];
 
-// lh 부분 수열이 사전 순 뒤이면 양수 반환
-// rh 부분 수열이 사전 순 뒤이면 음수 반환
-// 같으면 0반환
-int comp_cs(const vi& lh, const vi& rh) {
-  if (lh.size() == 0 && rh.size() == 0) {
-    return 0;
-  }
+void get_lcs(int ia_start, int ib_start, vi& lcs) {
+  // 주어진 범위 내에서 가장 큰 공통 부분 수열 원소 찾기
+  int big_ia = 0;
+  int big_ib = 0;
+  for (int ia = ia_start; ia <= cnt_A; ++ia) {
+    for (int ib = ib_start; ib <= cnt_B; ++ib) {
+      if (A[ia] != B[ib]) {
+        continue;
+      }
 
-  if (lh.size() > 0 && rh.size() == 0) {
-    return 1;
-  }
-  if (lh.size() == 0 && rh.size() > 0) {
-    return -1;
-  }
-
-  for (int i = 0; i < lh.size() && i < rh.size(); ++i) {
-    if (lh[i] == rh[i]) {
-      continue;
+      // 같을 때 더 큰 수 찾으면 갱신
+      if (big_ia == 0 || A[big_ia] < A[ia]) {
+        big_ia = ia;
+        big_ib = ib;
+      }
     }
-
-    return lh[i] - rh[i];
   }
 
-  return lh.size() - rh.size();
+  // 공통 부분 수열 원소 못찾으면 끝
+  if (big_ia == 0) {
+    return;
+  }
+
+  // 찾으면 
+  // 가장 큰 원소 공통 부분 수열에 추가하고
+  lcs.push_back(A[big_ia]);
+  // 남은 범위에서 다시 가장 큰 공통 부분 수열 원소 찾기
+  get_lcs(big_ia + 1, big_ib + 1, lcs);
 }
+
 
 int main() {
   ios::sync_with_stdio(0);
@@ -47,42 +51,10 @@ int main() {
   for (int i = 1; i <= cnt_B; ++i) {
     cin >> B[i];
   }
+  vi lcs;
+  lcs.reserve(100);
+  get_lcs(1, 1, lcs);
 
-
-  for (int ia = 1; ia <= cnt_A; ++ia) {
-    for (int ib = 1; ib <= cnt_B; ++ib) {
-      cs[ia][ib] = cs[ia - 1][ib - 1];
-
-      // 같은 경우
-      if (A[ia] == B[ib]) {
-        // cs[ia-1][ib-1]까지 확인 후 얻은 사전 순 가장 뒤 부분 수열과 A[ia]로
-        // 사전 순 가장 뒤 부분 수열 만들기
-        int i = 0;
-        for (; i < cs[ia][ib].size(); ++i) {
-          if (A[ia] > cs[ia][ib][i]) {
-            break;
-          }
-        }
-
-        cs[ia][ib].resize(i);
-        cs[ia][ib].push_back(A[ia]);
-      }
-
-
-      if (comp_cs(cs[ia - 1][ib], cs[ia][ib - 1]) > 0) {
-        if (comp_cs(cs[ia - 1][ib], cs[ia][ib]) > 0) {
-          cs[ia][ib] = cs[ia - 1][ib];
-        }
-      }
-      else {
-        if (comp_cs(cs[ia][ib - 1], cs[ia][ib]) > 0) {
-          cs[ia][ib] = cs[ia][ib - 1];
-        }
-      }
-    }
-  }
-
-  vi& lcs = cs[cnt_A][cnt_B];
   cout << lcs.size();
   if (lcs.size() > 0) {
     cout << '\n';
