@@ -45,20 +45,16 @@ int main() {
     }
 
     // 처리
-    for (int i = 1; i <= N; ++i) {
-      for (int s = 1; s <= N; ++s) {
-        for (int e = 1; e <= N; ++e) {
-          dist[s][e] = min(dist[s][e], dist[s][i] + dist[i][e]);
-        }
-      }
-    }
     bool yes = false;
 
-    for (int i = 1; i <= N; ++i) {
-
-      if (dist[i][i] < 0) {
-        yes = true;
-        break;
+    for (int i = 1; i <= N && yes == false; ++i) {
+      for (int s = 1; s <= N && yes == false; ++s) {
+        for (int e = 1; e <= N && yes == false; ++e) {
+          dist[s][e] = min(dist[s][e], dist[s][i] + dist[i][e]);
+          if (s == e && dist[s][e] < 0) {
+            yes = true;
+          }
+        }
       }
     }
 
