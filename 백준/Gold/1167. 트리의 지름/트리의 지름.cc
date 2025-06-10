@@ -6,34 +6,25 @@ typedef vector<pii> vpii;
 
 int V;
 vpii edges[100'001];
+int farthest;
+int farthest_dist;
 
-void search(int parent, int cur, pii& farthest)
+void dfs(int parent, int cur, int dist)
 {
-    vpii nodes;
     for (const auto& [nxt, nxt_dist] : edges[cur])
     {
         if (nxt == parent)
         {
             continue;
         }
-        pii far{0, 0};
-        search(cur, nxt, far);
 
-        if (far.first == 0)
-        {
-            far.first = nxt;
-        }
-
-        far.second += nxt_dist;
-        nodes.push_back(far);
+        dfs(cur, nxt, dist + nxt_dist);
     }
 
-    for (const auto& node : nodes)
+    if (farthest_dist < dist)
     {
-        if (farthest.second < node.second)
-        {
-            farthest = node;
-        }
+        farthest = cur;
+        farthest_dist = dist;
     }
 }
 
@@ -62,9 +53,8 @@ int main()
         }
     }
 
-    pii far[2] = {{0, 0}, {0, 0}};
-    search(0, 1, far[0]);
-    search(0, far[0].first, far[1]);
+    dfs(0, 1, 0);
+    dfs(0, farthest, 0);
 
-    cout << far[1].second;
+    cout << farthest_dist;
 }
